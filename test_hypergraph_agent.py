@@ -7,21 +7,21 @@ class TestHypergraphAgent(unittest.TestCase):
 
     def test_agent_initialization(self):
         """
-        Testa a inicialização do HypergraphAgent.
+        Test the initialization of HypergraphAgent.
         """
         self.assertIsInstance(self.agent, HypergraphAgent)
-        # Exemplo: self.assertEqual(self.agent.some_attribute, expected_value)
+        # Example: self.assertEqual(self.agent.some_attribute, expected_value)
 
     def test_some_functionality(self):
         """
-        Testa alguma funcionalidade do HypergraphAgent.
+        Test some functionality of HypergraphAgent.
         """
-        # Adicione asserções para testar funcionalidades específicas
+        # Add assertions to test specific functionalities
         result = self.agent.some_method()
-        expected_result = "expected_value"  # Define o resultado esperado
+        expected_result = "expected_value"  # Define the expected result
         self.assertEqual(result, expected_result)
 
-    # Adicione mais métodos de teste conforme necessário
+    # Add more test methods as needed
 
 if __name__ == '__main__':
     unittest.main()
