@@ -1,5 +1,3 @@
-# Workflow for Hypergraph-Enhanced Reasoning Project
-
 name: Hypergraph CI
 
 on:
@@ -24,42 +22,29 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create Hypergraph
+      - name: Run Hypergraph Tests
         run: |
-          echo "Creating Hypergraph..."
+          echo "Running Hypergraph tests..."
           node -e "
             const HypergraphAgent = require('./index.js');
+            const HypergraphReasoning = require('./hypergraph-reasoning.js');
+            const Hypergraph = require('./hypergraph.js');
+
             const agent = new HypergraphAgent();
             agent.createHypergraph();
             console.log('Hypergraph created successfully');
-          "
 
-      - name: Run Hypergraph Reasoning Tests
-        run: |
-          echo "Running Hypergraph Reasoning tests..."
-          node -e "
-            const HypergraphReasoning = require('./hypergraph-reasoning.js');
-            const Hypergraph = require('./hypergraph.js');
             const hypergraph = new Hypergraph();
             const reasoning = new HypergraphReasoning(hypergraph);
             
-            // Add some test nodes and edges
             hypergraph.addNode('A', 'Node A');
             hypergraph.addNode('B', 'Node B');
             hypergraph.addNode('C', 'Node C');
             hypergraph.addHyperedge('AB', 'Hyperedge AB', ['A', 'B']);
             
-            // Test inferRelationships
-            const relationships = reasoning.inferRelationships({id: 'A'}, {id: 'B'});
-            console.log('Inferred relationships:', relationships);
-            
-            // Test findCommonalities
-            const commonalities = reasoning.findCommonalities({id: 'A'}, {id: 'B'});
-            console.log('Commonalities:', commonalities);
-            
-            // Test findDifferences
-            const differences = reasoning.findDifferences({id: 'A'}, {id: 'C'});
-            console.log('Differences:', differences);
+            console.log('Inferred relationships:', reasoning.inferRelationships({id: 'A'}, {id: 'B'}));
+            console.log('Commonalities:', reasoning.findCommonalities({id: 'A'}, {id: 'B'}));
+            console.log('Differences:', reasoning.findDifferences({id: 'A'}, {id: 'C'}));
           "
 
       - name: Run Python Unit Tests
@@ -71,4 +56,4 @@ jobs:
         run: |
           echo "Generating Hypergraph visualization..."
           # Add command to generate visualization (placeholder)
-          echo "Hypergraph visualization generated"
+          echo "Hypergraph visualization generated" 
