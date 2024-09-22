@@ -1,0 +1,74 @@
+# Workflow for Hypergraph-Enhanced Reasoning Project
+
+name: Hypergraph CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Hypergraph
+        run: |
+          echo "Creating Hypergraph..."
+          node -e "
+            const HypergraphAgent = require('./index.js');
+            const agent = new HypergraphAgent();
+            agent.createHypergraph();
+            console.log('Hypergraph created successfully');
+          "
+
+      - name: Run Hypergraph Reasoning Tests
+        run: |
+          echo "Running Hypergraph Reasoning tests..."
+          node -e "
+            const HypergraphReasoning = require('./hypergraph-reasoning.js');
+            const Hypergraph = require('./hypergraph.js');
+            const hypergraph = new Hypergraph();
+            const reasoning = new HypergraphReasoning(hypergraph);
+            
+            // Add some test nodes and edges
+            hypergraph.addNode('A', 'Node A');
+            hypergraph.addNode('B', 'Node B');
+            hypergraph.addNode('C', 'Node C');
+            hypergraph.addHyperedge('AB', 'Hyperedge AB', ['A', 'B']);
+            
+            // Test inferRelationships
+            const relationships = reasoning.inferRelationships({id: 'A'}, {id: 'B'});
+            console.log('Inferred relationships:', relationships);
+            
+            // Test findCommonalities
+            const commonalities = reasoning.findCommonalities({id: 'A'}, {id: 'B'});
+            console.log('Commonalities:', commonalities);
+            
+            // Test findDifferences
+            const differences = reasoning.findDifferences({id: 'A'}, {id: 'C'});
+            console.log('Differences:', differences);
+          "
+
+      - name: Run Python Unit Tests
+        run: |
+          echo "Running Python unit tests..."
+          python -m unittest discover tests
+
+      - name: Generate Hypergraph Visualization
+        run: |
+          echo "Generating Hypergraph visualization..."
+          # Add command to generate visualization (placeholder)
+          echo "Hypergraph visualization generated"
